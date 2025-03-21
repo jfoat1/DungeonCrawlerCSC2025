@@ -10,14 +10,26 @@ public class Room
     private Exit[] availableExits = new Exit[4];
     private int currNumberOfExits = 0;
 
+    private bool hasPlayerBeenHere;
+
     private string name;
 
     public Room(string name)
     {
         this.name = name;
         this.thePlayer = null;
+        this.hasPlayerBeenHere = false;
     }
 
+    public bool getHasPlayerBeenHere()
+    {
+        return this.hasPlayerBeenHere;
+    }
+
+    public Player getPlayer()
+    {
+        return this.thePlayer;
+    }
     public string getName()
     {
         return this.name;
@@ -26,13 +38,15 @@ public class Room
     public bool tryToTakeExit(string direction)
     {
         Exit theExit = this.getExit(direction);
-        if(theExit != null)
+        if (theExit != null)
         {
-            Room destinationRoom = theExit.getDestination();
+            //remove the player from the current room
             Core.thePlayer.getCurrentRoom().removePlayer();
-            destinationRoom.setPlayer(Core.thePlayer);
 
             //place them in the destination room in that direction
+            Room destinationRoom = theExit.getDestination();
+            destinationRoom.setPlayer(Core.thePlayer);
+
             //update the room the player is currently in so the room exits visually update
             return true;
         }
@@ -45,11 +59,11 @@ public class Room
 
     private Exit getExit(string direction)
     {
-        if(this.hasExit(direction))
+        if (this.hasExit(direction))
         {
             for (int i = 0; i < this.currNumberOfExits; i++)
             {
-                if(String.Equals(this.availableExits[i].getDirection(), direction))
+                if (String.Equals(this.availableExits[i].getDirection(), direction))
                 {
                     return this.availableExits[i];
                 }
@@ -60,28 +74,30 @@ public class Room
 
     public bool hasExit(string direction)
     {
-        for(int i = 0; i < this.currNumberOfExits; i++)
+        for (int i = 0; i < this.currNumberOfExits; i++)
         {
-            if(String.Equals(this.availableExits[i].getDirection(), direction))
+            if (String.Equals(this.availableExits[i].getDirection(), direction))
             {
                 return true;
             }
         }
         return false;
     }
+
+    public void removePlayer()
+    {
+        this.thePlayer = null;
+        this.hasPlayerBeenHere = true;
+    }
+
     public void setPlayer(Player p)
     {
         this.thePlayer = p;
         this.thePlayer.setCurrentRoom(this);
     }
-
-    public void removePlayer()
-    {
-        this.thePlayer = null;
-    }
     public void addExit(string direction, Room destination)
     {
-        if(this.currNumberOfExits <= 3)
+        if (this.currNumberOfExits <= 3)
         {
             Exit e = new Exit(direction, destination);
             this.availableExits[this.currNumberOfExits] = e;
