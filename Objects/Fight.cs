@@ -1,13 +1,14 @@
 using Unity.VisualScripting.FullSerializer;
 using UnityEditor.Build.Content;
+using System.Collections;
 using UnityEngine;
 
-public class Fight
+public class Fight : MonoBehaviour 
 {
     private Inhabitant attacker;
     private Inhabitant defender;
     Monster theMonster = new Monster("Goblin");
-    Player thePlayer = new Player("Tim");
+    Player thePlayer = Core.thePlayer;
     public Fight()
     {
         int roll = Random.Range(0, 20) + 1;
@@ -15,6 +16,7 @@ public class Fight
         {
             Debug.Log(this.theMonster.getName() + " goes first.");
             attacker = theMonster;
+
             defender = this.thePlayer;
         }
         else
@@ -24,13 +26,16 @@ public class Fight
             defender = theMonster;
         }
     }
-
-    public void startFight()
+    public IEnumerator startFight()
     {
         Debug.Log("Tim's health: " + this.thePlayer.getCurrHP());
         Debug.Log("Goblin's health: " + this.theMonster.getCurrHP());
         while (defender.isAlive() && attacker.isAlive())
         {
+            if (theMonster.getCurrHP() > 0 && thePlayer.getCurrHP() > 0)
+            {
+                yield return new WaitForSeconds(1);
+            }
             int hit = attacker.rollHit();
             if (hit >= defender.getAC())
             {
