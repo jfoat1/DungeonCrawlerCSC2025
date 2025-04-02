@@ -12,7 +12,6 @@ public class RoomManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Core.thePlayer = new Player("Mike");
         this.theDungeon = new Dungeon();
         this.setupRoom();
         this.mmCurrPos = Core.mmStartPos;
@@ -41,67 +40,67 @@ public class RoomManager : MonoBehaviour
     void Update()
     {
         bool didChangeRoom = false;
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if(Input.GetKeyDown(KeyCode.UpArrow))
         {
             //try to goto the north
             didChangeRoom = Core.thePlayer.getCurrentRoom().tryToTakeExit("north");
-            if (didChangeRoom)
+            if(didChangeRoom)
             {
                 this.mmCurrPos.z = this.mmCurrPos.z + 1.2f;
-                if (!Core.thePlayer.getCurrentRoom().getHasPlayerBeenHere())
+                if(!Core.thePlayer.getCurrentRoom().getHasPlayerBeenHere())
                 {
                     GameObject newMMRoom = Instantiate(this.mmRoomPrefab);
                     newMMRoom.transform.position = this.mmCurrPos;
-                }
-            }
+                }  
+            }   
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if(Input.GetKeyDown(KeyCode.LeftArrow))
         {
             //try to goto the west
             didChangeRoom = Core.thePlayer.getCurrentRoom().tryToTakeExit("west");
-            if (didChangeRoom)
+            if(didChangeRoom)
             {
                 this.mmCurrPos.x = this.mmCurrPos.x - 1.2f;
-                if (!Core.thePlayer.getCurrentRoom().getHasPlayerBeenHere())
+                if(!Core.thePlayer.getCurrentRoom().getHasPlayerBeenHere())
                 {
                     GameObject newMMRoom = Instantiate(this.mmRoomPrefab);
                     newMMRoom.transform.position = this.mmCurrPos;
                 }
-            }
+            }   
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if(Input.GetKeyDown(KeyCode.RightArrow))
         {
             //try to goto the east
             didChangeRoom = Core.thePlayer.getCurrentRoom().tryToTakeExit("east");
-            if (didChangeRoom)
+            if(didChangeRoom)
             {
                 this.mmCurrPos.x = this.mmCurrPos.x + 1.2f;
-                if (!Core.thePlayer.getCurrentRoom().getHasPlayerBeenHere())
+                if(!Core.thePlayer.getCurrentRoom().getHasPlayerBeenHere())
                 {
-                    GameObject newMMRoom = Instantiate(this.mmRoomPrefab);
+                    GameObject newMMRoom = Instantiate(this.mmRoomPrefab); 
                     newMMRoom.transform.position = this.mmCurrPos;
                 }
-
-            }
+                
+            }   
 
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if(Input.GetKeyDown(KeyCode.DownArrow))
         {
             //try to goto the south
             didChangeRoom = Core.thePlayer.getCurrentRoom().tryToTakeExit("south");
-            if (didChangeRoom)
+            if(didChangeRoom)
             {
                 this.mmCurrPos.z = this.mmCurrPos.z - 1.2f;
-                if (!Core.thePlayer.getCurrentRoom().getHasPlayerBeenHere())
+                if(!Core.thePlayer.getCurrentRoom().getHasPlayerBeenHere())
                 {
                     GameObject newMMRoom = Instantiate(this.mmRoomPrefab);
                     newMMRoom.transform.position = this.mmCurrPos;
-                }
-            }
+                }   
+            }   
         }
 
         //did we change rooms?
-        if (didChangeRoom)
+        if(didChangeRoom)
         {
             this.setupRoom();
         }

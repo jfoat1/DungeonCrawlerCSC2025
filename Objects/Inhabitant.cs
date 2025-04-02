@@ -1,4 +1,3 @@
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public abstract class Inhabitant
@@ -13,24 +12,7 @@ public abstract class Inhabitant
         this.name = name;
         this.maxHp = Random.Range(30, 50);
         this.currHp = this.maxHp;
-        this.ac = Random.Range(10, 20);
-    }
-
-    public int rollHit()
-    {
-        int attack = Random.Range(10, 30) + 1;
-        return attack;
-    }
-
-    public void takeDamage()
-    {
-        int damage = Random.Range(5, 10) + 1;
-        this.currHp = this.currHp - damage; 
-    }
-    
-    public int getAC()
-    {
-        return this.ac;
+        this.ac = Random.Range(5, 12);
     }
 
     public string getName()
@@ -38,20 +20,27 @@ public abstract class Inhabitant
         return this.name;
     }
 
-    public int getCurrHP()
+    public int getCurrHp()
     {
         return this.currHp;
     }
 
-    public bool isAlive()
+    public int getMaxHp()
     {
-        if (this.currHp > 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return this.maxHp;
+    }
+
+    public bool isDead()
+    {
+        return this.currHp <= 0;
+    }
+
+    public void takeDamage(int damage)
+    {
+        this.currHp -= damage;
+    }
+    public int getAC()
+    {
+        return this.ac;
     }
 }
